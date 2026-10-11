@@ -81,7 +81,7 @@ document.getElementById('year').textContent=new Date().getFullYear();
 (()=>{const intro=document.getElementById('intro'),video=document.getElementById('steph');if(!intro||!video)return;
 if(matchMedia('(prefers-reduced-motion: reduce)').matches||sessionStorage.getItem('ppss-intro-seen')){intro.remove();return}
 let finished=false;let timer;
-function finish(){if(finished)return;finished=true;intro.classList.add('show-still');setTimeout(()=>intro.classList.add('show-brand'),950);setTimeout(()=>{intro.classList.add('done');sessionStorage.setItem('ppss-intro-seen','1');setTimeout(()=>{video.pause();intro.remove()},850)},3300)}
+function finish(){if(finished)return;finished=true;clearTimeout(timer);/* Keep the video's own last frame visible; do not overlay the landscape JPG. */setTimeout(()=>{intro.classList.add('done');sessionStorage.setItem('ppss-intro-seen','1');setTimeout(()=>{video.pause();intro.remove()},850)},1600)}
 video.addEventListener('ended',finish,{once:true});video.addEventListener('error',finish,{once:true});
 video.addEventListener('loadedmetadata',()=>{clearTimeout(timer);timer=setTimeout(finish,Math.min((video.duration||10)*1000+1700,17000))},{once:true});
 const play=video.play();if(play&&play.catch)play.catch(finish);
